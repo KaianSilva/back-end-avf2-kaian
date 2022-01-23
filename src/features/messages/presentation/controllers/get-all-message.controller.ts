@@ -17,7 +17,7 @@ export class GetAllMessageController implements Controller {
 
       const repository = new MessageRepository();
 
-      const messages = await repository.index(req,res);
+      const messages = await repository.getAll();
 
      /*  if (messages.length === 0) return notFound(res); */
 

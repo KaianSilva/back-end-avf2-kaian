@@ -10,7 +10,7 @@ import { Message } from "../../domain/models/message";
 
 interface MessageParams {
     uid?: string;
-    user?: string;
+    user: string;
     title: string;
     description: string;
 }
@@ -19,12 +19,32 @@ export class MessageRepository{
     async getByUid(uid: string): Promise<Message | undefined> {
         console.log("vai consultar o banco para recuperar o registro pelo uid");
     
-        const projectEntity = await MessageEntity.findOne(uid);
+        const projectEntity = await MessageEntity.findOne({
+          where: {
+            uid: uid,
+          },
+        });
     
         if (!projectEntity) return undefined;
         
         console.log(projectEntity)
         return this.mapperFromEntityToModel(projectEntity);
+      }
+
+      async getByUserUid(uid: string): Promise<Message[]> {
+        console.log("vai consultar o banco para recuperar o registro pelo uid do usuario");
+        console.log(uid)
+        const msgEntities = await MessageEntity.find({
+          where: {
+            user: uid,
+          }
+        });        
+        console.log(msgEntities)
+        return msgEntities.map((msgEntity) =>
+          this.mapperFromEntityToModel(msgEntity)
+        );
+    
+       
       }
 
        
@@ -37,18 +57,6 @@ export class MessageRepository{
             );
           }
 
-          async index(req: Request, res: Response) {
-            const messages = await MessageEntity.find();
-            
-            return (messages);
-        }
-
-           async view(uid: string) {
-            
-            const messages = await MessageEntity.findOne(uid);
-        
-            return (messages);
-        }
 
 
         async create(data: MessageParams): Promise<Message | undefined> {
@@ -61,7 +69,7 @@ export class MessageRepository{
             const msgEntity = MessageEntity.create({
               title: data.title,
               description: data.description,
-              user: user             
+              user: data.user             
             });
         
             // de falto salta as informações no banco de dados
@@ -85,7 +93,7 @@ export class MessageRepository{
         
             await msgUpdated.save();
         
-            return (msgUpdated);
+            return this.mapperFromEntityToModel(msgUpdated);
           }
 
           async deleteMessage(uid:string) {
@@ -100,22 +108,6 @@ export class MessageRepository{
             return (msgDeleted);
           }
         
-          public async show(uid: string) {
-            console.log('show')
-            /* const user = await UserEntity.findOne(data.user);
-            console.log('show2') */
-            /* const messages = await Message.find({ relations: ["users"] }); */ /* Message.findAndCount(user_uid); */
-            const user = await UserEntity.find({/* { relations: ["messages"] },
-			where: { firstName: "Timber", lastName: "Saw" } } */
-			where: {
-				uid: uid,
-			},
-			relations: ["messages"],
-		});
-        
-        return user
-            
-        }
 
 
           private mapperFromEntityToModel(entity: MessageEntity): Message {
@@ -123,7 +115,7 @@ export class MessageRepository{
               uid: entity.uid,
               title: entity.title,
               description: entity.description,
-              user:entity.user.uid
+              user:entity.user
             };
           }
 

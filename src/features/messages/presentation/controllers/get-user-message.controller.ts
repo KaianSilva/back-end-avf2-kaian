@@ -15,7 +15,7 @@ export class GetUserMessageController implements Controller {
         
         //  buscado na base dados
         const repository = new MessageRepository();
-        const message = await repository.show(uid);
+        const message = await repository.getByUserUid(uid);
         
         /* if (!message) return res.status(404).json({ error: "Data not found" });
    */

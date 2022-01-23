@@ -15,7 +15,7 @@ export class GetOneMessageController implements Controller {
         
         //  buscado na base dados
         const repository = new MessageRepository();
-        const message = await repository.view(uid);
+        const message = await repository.getByUid(uid);
         console.log(message)
         /* if (!message) return res.status(404).json({ error: "Data not found" });
    */
