@@ -6,10 +6,10 @@ module.exports = {
     synchronize: false,
     logging: false,
     entities: [
-        'src/core/infra/data/database/entities/**/*'
+        'dist/core/infra/data/database/entities/**/*'
     ],
     migrations : [
-        'src/core/infra/data/database/migrations/**/*'
+        'dist/core/infra/data/database/migrations/**/*'
     ],
     cli: {
         entitiesDir: 'src/core/infra/data/database/entities',
