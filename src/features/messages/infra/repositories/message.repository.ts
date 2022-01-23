@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { ok } from "assert";
 import { EntityManager, Transaction, TransactionManager } from "typeorm";
 import { MessageEntity } from "../../../../core/infra/data/database/entities/MessageEntity";
@@ -100,7 +100,22 @@ export class MessageRepository{
             return (msgDeleted);
           }
         
-          
+          public async show(uid: string) {
+            console.log('show')
+            /* const user = await UserEntity.findOne(data.user);
+            console.log('show2') */
+            /* const messages = await Message.find({ relations: ["users"] }); */ /* Message.findAndCount(user_uid); */
+            const user = await UserEntity.find({/* { relations: ["messages"] },
+			where: { firstName: "Timber", lastName: "Saw" } } */
+			where: {
+				uid: uid,
+			},
+			relations: ["messages"],
+		});
+        
+        return user
+            
+        }
 
 
           private mapperFromEntityToModel(entity: MessageEntity): Message {

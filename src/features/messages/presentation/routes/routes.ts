@@ -3,6 +3,7 @@ import { CreateMessageController } from "../controllers/create-message.controlle
 import { DeleteMessageController } from "../controllers/delete-message.controller";
 import { GetAllMessageController } from "../controllers/get-all-message.controller";
 import { GetOneMessageController } from "../controllers/get-one-message.controller";
+import { GetUserMessageController } from "../controllers/get-user-message.controller";
 import { UpdateMessageController } from "../controllers/update-message.controller";
 
 
@@ -15,6 +16,7 @@ export default class MessageRoutes {
     routes.get("/message",new GetAllMessageController().handle)
     routes.put("/message/:uid", new UpdateMessageController().handle)
     routes.get("/message/:uid", new GetOneMessageController().handle)
+    routes.get("/message/user/:uid", new GetUserMessageController().handle)
     routes.delete("/message/:uid", new DeleteMessageController().handle)
     return routes;
   }
