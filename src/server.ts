@@ -1,13 +1,14 @@
 import App from "./core/presentation/app";
 import Database from "./core/infra/data/connections/database";
 import "dotenv/config";
+import Redis from "./core/infra/data/connections/redis";
 
 
 /**
  * Este é o arquivo que abre a conexão do banco e inicia a aplicação e o servidor.
  */
 
-/* Promise.all([new Database().openConnection() , new Redis().openConnection() ])
+Promise.all([new Database().openConnection() , new Redis().openConnection() ])
   .then(() => {
     const app = new App();
     app.init();
@@ -16,9 +17,9 @@ import "dotenv/config";
   .catch((err) => {
     console.log(err);
   });
- */
 
-  new Database()
+
+ /*  new Database()
   .openConnection()
   .then(() => {
     const app = new App();
@@ -28,3 +29,4 @@ import "dotenv/config";
   .catch((err) => {
     console.log(err);
   });
+ */

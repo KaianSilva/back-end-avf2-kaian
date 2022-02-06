@@ -10,7 +10,7 @@ import { Message } from "../../domain/models/message";
 
 interface MessageParams {
     uid?: string;
-    user: string;
+    user: UserEntity;
     title: string;
     description: string;
 }
@@ -19,16 +19,16 @@ export class MessageRepository{
     async getByUid(uid: string): Promise<Message | undefined> {
         console.log("vai consultar o banco para recuperar o registro pelo uid");
     
-        const projectEntity = await MessageEntity.findOne({
+        const msgEntity = await MessageEntity.findOne({
           where: {
             uid: uid,
           },
         });
     
-        if (!projectEntity) return undefined;
+        if (!msgEntity) return undefined;
         
-        console.log(projectEntity)
-        return this.mapperFromEntityToModel(projectEntity);
+        console.log(msgEntity)
+        return this.mapperFromEntityToModel(msgEntity);
       }
 
       async getByUserUid(uid: string): Promise<Message[]> {
@@ -69,7 +69,7 @@ export class MessageRepository{
             const msgEntity = MessageEntity.create({
               title: data.title,
               description: data.description,
-              user: data.user             
+              user: data.user            
             });
         
             // de falto salta as informações no banco de dados

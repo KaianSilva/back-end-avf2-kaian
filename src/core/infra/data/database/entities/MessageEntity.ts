@@ -21,13 +21,13 @@ export class MessageEntity extends BaseEntity {
 
 	@ManyToOne(() => UserEntity, (user) => user.messages)
 	@JoinColumn({ name: "user_uid" })
-	user: string;
+	user: UserEntity;
 
 
   constructor(
 		title: string,
 		description: string,
-		user: string,
+		user: UserEntity,
 		uid: string,
 		createdAt?: Date,
 		updatedAt?: Date
