@@ -22,9 +22,13 @@ export class UpdateMessageController implements Controller {
       if(!message) return res.status(404).send("mensagem ou usuário não encontrada");
 
       const cache = new CacheRepository();
-      await cache.delete("Kaian_DB_Redis");
-      await cache.delete(`Kaian_Redis_message:${uid}`);
-      //await cache.delete("Kaian_Redis_UserMessages");
+      
+      //exclui lista de msgs do user  no cache
+      await cache.delete(`Kaian:messages:user:${message.user}`);
+
+      // exclui o uid da mensagem
+      await cache.delete(`Kaian:message:${uid}`);
+      
 
       return ok(res, message);
     } catch (error: any) {

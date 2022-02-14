@@ -8,26 +8,34 @@ import { MessageRepository } from "../../infra/repositories/message.repository";
 
 export class GetUserMessageController implements Controller {
     async handle(req: Request, res: Response): Promise<any> {
-      console.log(
-        "lógica para buscar um mensages por um identificador (uid) user"
-      );
+      
       try {
         const { uid } = req.params;
-        console.log(uid)
+        
+        const cache = new CacheRepository();
 
+        const messsagesCache = await cache.get(`Kaian:messages:user:${uid}`)
+
+        if(messsagesCache){
+          return ok(res, (messsagesCache as Message[]).map(message=> ({
+            ...message,
+             _cache: true,
+            }))
+          );
+        }
         
         
         //  buscado na base dados
         const repository = new MessageRepository();
-        const message = await repository.getByUserUid(uid);
+        const messages = await repository.getByUserUid(uid);
         
-        /* if (!message) return res.status(404).json({ error: "Data not found" });
-   */
+        await cache.set(`Kaian:messages:user:${uid}`, messages)
+   
         
         
         
   
-        return ok(res, message);
+        return ok(res, messages);
       } catch (error: any) {
         return serverError(res, error);
       }

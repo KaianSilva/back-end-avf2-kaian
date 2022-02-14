@@ -10,7 +10,7 @@ import { Message } from "../../domain/models/message";
 
 interface MessageParams {
     uid?: string;
-    user: UserEntity;
+    user: string;
     title: string;
     description: string;
 }
@@ -36,7 +36,7 @@ export class MessageRepository{
         console.log(uid)
         const msgEntities = await MessageEntity.find({
           where: {
-            user: uid,
+            userUID: uid,
           }
         });        
         console.log(msgEntities)
@@ -69,7 +69,7 @@ export class MessageRepository{
             const msgEntity = MessageEntity.create({
               title: data.title,
               description: data.description,
-              user: data.user            
+              userUID: data.user           
             });
         
             // de falto salta as informações no banco de dados
@@ -80,7 +80,7 @@ export class MessageRepository{
             
           }
           
-          async editMessage(data: MessageParams) {
+          async editMessage(data: MessageParams): Promise<Message | undefined> {
             const msgEntity = await MessageEntity.findOne(data.uid);
             
             if (!msgEntity) return undefined;
@@ -96,16 +96,15 @@ export class MessageRepository{
             return this.mapperFromEntityToModel(msgUpdated);
           }
 
-          async deleteMessage(uid:string) {
+          async deleteMessage(uid:string): Promise<Message | undefined> {
             const msgEntity = await MessageEntity.findOne(uid);
             
             if (!msgEntity) return undefined;
             
-            const msgDeleted = MessageEntity.remove(msgEntity);
-        
+             MessageEntity.remove(msgEntity);  
             
         
-            return (msgDeleted);
+            return this.mapperFromEntityToModel(msgEntity);
           }
         
 
@@ -115,7 +114,7 @@ export class MessageRepository{
               uid: entity.uid,
               title: entity.title,
               description: entity.description,
-              user:entity.user
+              user:entity.userUID
             };
           }
 

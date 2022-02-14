@@ -13,6 +13,9 @@ export class MessageEntity extends BaseEntity {
 	@Column()
   	description!: string;
 
+	@Column({ name: "user_uid" })
+	userUID!: string;
+
 	@Column({ name: "created_at" })
 	createdAt?: Date;
 

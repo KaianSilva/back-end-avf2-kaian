@@ -19,7 +19,7 @@ export class GetOneMessageController implements Controller {
         const cache = new CacheRepository();
 
         // recupera o registro no cache
-        const messageCache: Message = await cache.get(`Kaian_Redis_message:${uid}`);
+        const messageCache: Message = await cache.get(`Kaian:message:${uid}`);
 
         // verifica se encontrou e retorna caso verdadeiro
         if (messageCache) {
@@ -34,7 +34,7 @@ export class GetOneMessageController implements Controller {
         if (!message) return res.status(404).json({ error: "Data not found" });
    
         // salva no redis para o dado ficar cacheado
-        await cache.set(`Kaian_Redis_message:${message.uid}`, message);
+        await cache.set(`Kaian:message:${message.uid}`, message);
   
         return ok(res, message);
       } catch (error: any) {

@@ -21,20 +21,19 @@ export class CreateMessageController implements Controller {
         const repository = new MessageRepository();
         const cache = new CacheRepository();
 
-        console.log('controller')
-        // salvar na base dados
         const message = await repository.create(req.body); 
 
         console.log(message)
         if(!message) return res.status(404).send("Usuário não encontrado");
         
         // salvar  no cache (redis)
-        const result = await cache.set(`Kaian_Redis_message:${message.uid}`, message);
+        const result = await cache.set(`Kaian:message:${message.uid}`, message);
 
         if (!result) console.log("NÃO SALVOU NO CACHE");
 
         // limpa a lista de registros do redis, pois o cache está desatualizado neste momento
-        await cache.delete("Kaian_DB_Redis");
+        await cache.delete(`Kaian:messages:user:${message.user}`);
+        
 
         
 
