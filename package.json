@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "npm run typeorm migration:run && npx tsc",
+    "start": "node ./dist/server.js",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "dev": "ts-node-dev src/server.ts",
     "dev:debug": "ts-node-dev --inspect=0.0.0.0:9229 src/server.ts",
     "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
