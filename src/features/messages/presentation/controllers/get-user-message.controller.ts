@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CacheRepository } from "../../../../core/infra/repositories/cache.repository";
 import { Controller } from "../../../../core/presentation/contracts/controller";
-import { ok, serverError } from "../../../../core/presentation/helpers/http-helper";
+import { ok, serverError,badRequest } from "../../../../core/presentation/helpers/http-helper";
 import { Message } from "../../domain/models/message";
 import { MessageRepository } from "../../infra/repositories/message.repository";
 
@@ -28,6 +28,8 @@ export class GetUserMessageController implements Controller {
         //  buscado na base dados
         const repository = new MessageRepository();
         const messages = await repository.getByUserUid(uid);
+
+        if(!messages) return  badRequest(res, "Usuário não encontrado");
         
         await cache.set(`Kaian:messages:user:${uid}`, messages)
    
