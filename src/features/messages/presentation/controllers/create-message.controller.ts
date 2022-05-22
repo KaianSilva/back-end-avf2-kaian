@@ -24,7 +24,7 @@ export class CreateMessageController implements Controller {
         const message = await repository.create(req.body); 
 
         console.log(message)
-        if(!message) return res.status(404).send("Usuário não encontrado");
+        if(!message) return res.status(404).json({ error: "Usuário não encontrado" });
         
         // salvar  no cache (redis)
         const result = await cache.set(`Kaian:message:${message.uid}`, message);

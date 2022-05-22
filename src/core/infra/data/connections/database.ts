@@ -20,4 +20,12 @@ export default class Database {
       }
     }
   }
+
+  public async disconnectDatabase() {
+    if (!Database.connection) {
+      throw new Error("CONEXAO_DATABASE_NAO_ABERTA");
+    }
+
+    await Database.connection.close();
+  }
 }

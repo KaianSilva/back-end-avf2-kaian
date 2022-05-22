@@ -21,7 +21,7 @@ export class DeleteMessageController implements Controller {
       
       const message = await repository.deleteMessage(uid);
 
-      if(!message) return res.status(404).send("Mensagem não encontrada");
+      if(!message) return res.status(404).json({ error: "Data not found" });
 
       const cache = new CacheRepository();
       

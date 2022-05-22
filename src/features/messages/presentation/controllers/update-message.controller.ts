@@ -19,7 +19,7 @@ export class UpdateMessageController implements Controller {
       const repository = new MessageRepository();
 
       const message = await repository.editMessage({ uid, ...req.body });
-      if(!message) return res.status(404).send("mensagem ou usuário não encontrada");
+      if(!message) return res.status(404).json({ error: "Data not found" });
 
       const cache = new CacheRepository();
       

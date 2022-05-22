@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const isProduction = process.env.NODE_ENV?.toLocaleLowerCase() === 'production'
 const rootDir = isProduction ? 'dist' : 'src'
-
+console.log(rootDir)
 module.exports = {
     type: 'postgres',
     url: process.env.DATABASE_URL,

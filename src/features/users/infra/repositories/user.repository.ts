@@ -10,9 +10,7 @@ interface UserParams {
 }
 
 export class UserRepository {
-  static verifyUserByUid(user: any) {
-      throw new Error("Method not implemented.");
-  }
+  
   async getUserByLogin(name: string): Promise<User | undefined> {
     const user = await UserEntity.findOne({
       where: { name: name },
